@@ -12,42 +12,34 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import static com.example.proyectofinal.R.id.navigation_header_role;
 import static com.example.proyectofinal.R.id.navigation_header_username;
-import static com.example.proyectofinal.R.id.start;
 
-public class MainActivity extends AppCompatActivity {
-    //Username y Role del usuario en la barra de navegación
+public class Instrucciones extends AppCompatActivity {
     TextView _username;
     TextView _role;
     String username;
     String role;
-    //Variables para el manejo de la barra de navegación
     private DrawerLayout dl;
     private ActionBarDrawerToggle adbt;
-    private NavigationView view;
     private View header;
     SharedPreferences settings;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        //Obtiene de SharedPreferences los datos del usuario que inicio sesión
+        setContentView(R.layout.activity_instrucciones);
         Intent i = getIntent();
         settings = getSharedPreferences("preferences",0);
         username = settings.getString("username", " ");
         role = settings.getString("role"," ");
-        //Barra de navegación
         dl = findViewById(R.id.dl);
         adbt = new ActionBarDrawerToggle(this,dl, R.string.Open, R.string.Close);
         dl.addDrawerListener(adbt);
         adbt.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //Barra de navegación
         NavigationView nav_view = findViewById(R.id.nav_view);
         header = nav_view.getHeaderView(0);
         _username = header.findViewById(navigation_header_username);
@@ -59,32 +51,32 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
                 if(id == R.id.historico){
-                    Intent ri = new Intent(MainActivity.this, RegistroHistorico.class);
+                    Intent ri = new Intent(Instrucciones.this, RegistroHistorico.class);
                     startActivity(ri);
                 }
+                else if(id == R.id.mainactivity){
+                    Intent ma = new Intent(Instrucciones.this, MainActivity.class);
+                    startActivity(ma);
+                }
                 else if(id == R.id.notificaciones){
-                    Intent not = new Intent(MainActivity.this, Notificaciones.class);
+                    Intent not = new Intent(Instrucciones.this, Notificaciones.class);
                     startActivity(not);
                 }
                 else if(id == R.id.codigos){
-                    Intent cod = new Intent(MainActivity.this, ListadoCodigos.class);
+                    Intent cod = new Intent(Instrucciones.this, ListadoCodigos.class);
                     startActivity(cod);
                 }
-                else if(id == R.id.instrucciones){
-                    Intent ins = new Intent(MainActivity.this, Instrucciones.class);
-                    startActivity(ins);
-                }
                 else if(id == R.id.creditos){
-                    Intent cre = new Intent(MainActivity.this, Creditos.class);
+                    Intent cre = new Intent(Instrucciones.this, Creditos.class);
                     startActivity(cre);
                 }
-                //Opción para Log Out
                 else if(id == R.id.logout_item){
+                    //Toast.makeText(MainActivity.this, "Item 4", Toast.LENGTH_SHORT).show();
                     SharedPreferences.Editor editor = settings.edit();
                     editor.clear().commit();
-                    Intent i = new Intent(MainActivity.this, MenuActivity.class);
+                    Intent i = new Intent(Instrucciones.this, MenuActivity.class);
                     startActivity(i);
-                    MainActivity.this.finish();
+                    Instrucciones.this.finish();
                 }
                 return false;
             }
@@ -100,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         int id = item.getItemId();
         if(id == R.id.create_alert){
-            Toast.makeText(MainActivity.this, "CREATE ALERT", Toast.LENGTH_SHORT).show();
+            Toast.makeText(Instrucciones.this, "CREATE ALERT", Toast.LENGTH_SHORT).show();
             return super.onOptionsItemSelected(item);
         }
         else{
