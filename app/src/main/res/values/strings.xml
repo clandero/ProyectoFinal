@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">ProyectoFinal</string>
+    <string name="Open">ProyectoFinal</string>
+    <string name="Close">ProyectoFinal</string>
 </resources>
