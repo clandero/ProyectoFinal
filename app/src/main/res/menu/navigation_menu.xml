@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/historico"
+        android:title="Registro Histórico">
+
+    </item>
+    <item
+        android:id="@+id/notificaciones"
+        android:title="Notificaciones">
+
+    </item>
+    <item
+        android:id="@+id/codigos"
+        android:title="Listado de códigos">
+
+    </item>
+    <item
+        android:id="@+id/instrucciones"
+        android:title="Instrucciones">
+
+    </item>
+    <item
+        android:id="@+id/creditos"
+        android:title="Créditos">
+
+    </item>
+    <item
+        android:id="@+id/logout_item"
+        android:title="Cerrar Sesión">
+
+    </item>
+
+</menu>
