@@ -24,6 +24,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URL;
+import java.util.Map;
 
 public class MenuActivity extends AppCompatActivity {
     private EditText username;
@@ -40,7 +41,7 @@ public class MenuActivity extends AppCompatActivity {
         SharedPreferences settings = getSharedPreferences("preferences",0);
         boolean isLoggedIn = settings.getBoolean("logged_in",false);
         if(isLoggedIn){
-            Intent i = new Intent(MenuActivity.this,MainActivity.class);
+            Intent i = new Intent(MenuActivity.this, MainActivity.class);
             startActivity(i);
             MenuActivity.this.finish();
         }
@@ -78,7 +79,7 @@ public class MenuActivity extends AppCompatActivity {
                                 editor.putString("username",username);
                                 editor.putString("role",response.getString("role"));
                                 editor.commit();
-                                Intent i = new Intent(MenuActivity.this,MainActivity.class);
+                                Intent i = new Intent(MenuActivity.this,MapaActivity.class);
                                 //i.putExtra("username",username);
                                 //i.putExtra("role",response.getString("role"));
                                 Log.d("LOGIN","Username is "+username+" and role is "+response.getString("role"));
