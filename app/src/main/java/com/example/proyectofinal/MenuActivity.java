@@ -102,11 +102,6 @@ public class MenuActivity extends AppCompatActivity {
                 });
 
         requestQueue.add(objectRequest);
-        /*if((r.getString("username").equals(username))){
-            Intent i = new Intent(MenuActivity.this,MainActivity.class);
-            startActivity(i);
-        }else{
-            Toast.makeText(this, "Nombre de usuarui y/o contraseña incorrectos", Toast.LENGTH_SHORT).show();
-        }*/
+
     }
 }
