@@ -12,6 +12,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -79,7 +82,7 @@ public class MenuActivity extends AppCompatActivity {
                                 editor.putString("username",username);
                                 editor.putString("role",response.getString("role"));
                                 editor.commit();
-                                Intent i = new Intent(MenuActivity.this,MapaActivity.class);
+                                Intent i = new Intent(MenuActivity.this,MainActivity.class);
                                 //i.putExtra("username",username);
                                 //i.putExtra("role",response.getString("role"));
                                 Log.d("LOGIN","Username is "+username+" and role is "+response.getString("role"));
@@ -109,5 +112,15 @@ public class MenuActivity extends AppCompatActivity {
         }else{
             Toast.makeText(this, "Nombre de usuarui y/o contraseña incorrectos", Toast.LENGTH_SHORT).show();
         }*/
+    }
+    public void addFragment(Fragment fragment, boolean addToBackStack, String tag) {
+        FragmentManager manager = getSupportFragmentManager();
+        FragmentTransaction ft = manager.beginTransaction();
+
+        if (addToBackStack) {
+            ft.addToBackStack(tag);
+        }
+        ft.replace(R.id.fragment_vista, fragment, tag);
+        ft.commitAllowingStateLoss();
     }
 }
