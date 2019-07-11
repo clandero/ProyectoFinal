@@ -8,12 +8,16 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 import static com.example.proyectofinal.R.id.navigation_header_role;
 import static com.example.proyectofinal.R.id.navigation_header_username;
@@ -28,6 +32,9 @@ public class ListadoCodigos extends AppCompatActivity {
     private NavigationView view;
     private View header;
     SharedPreferences settings;
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,6 +89,31 @@ public class ListadoCodigos extends AppCompatActivity {
                 return false;
             }
         });
+        ArrayList<ListadoCodigoItem> list = new ArrayList<>();
+        list.add(new ListadoCodigoItem(R.drawable.ic_incendio,"10-0    Fuego o humo en construcción"));
+        list.add(new ListadoCodigoItem(R.drawable.ic_car_on_fire,"10-1    Fuego en vehículo"));
+        list.add(new ListadoCodigoItem(R.drawable.ic_bonfire,"10-2    Fuego en pastizales o basura"));
+        list.add(new ListadoCodigoItem(R.drawable.ic_emergency,"10-3    Emergencia"));
+        list.add(new ListadoCodigoItem(R.drawable.ic_vehiche,"10-4    Rescate Vehicular"));
+        list.add(new ListadoCodigoItem(R.drawable.ic_biohazard,"10-5    Materiales peligrosos"));
+        list.add(new ListadoCodigoItem(R.drawable.ic_gas_mask,"10-6    Emanación de gases"));
+        list.add(new ListadoCodigoItem(R.drawable.ic_electrical,"10-7    Accidente eléctrico"));
+        list.add(new ListadoCodigoItem(R.drawable.ic_question_mark,"10-8    Llamado no clasificado"));
+        list.add(new ListadoCodigoItem(R.drawable.ic_warning_black_24dp,"10-9    Otros servicios"));
+        list.add(new ListadoCodigoItem(R.drawable.ic_falling_rocks,"10-10    Rebrote de escombros"));
+        list.add(new ListadoCodigoItem(R.drawable.ic_plane,"10-11    Servicio aéreo"));
+        list.add(new ListadoCodigoItem(R.drawable.ic_support,"10-12    Apoyo a otros cuerpos"));
+        list.add(new ListadoCodigoItem(R.drawable.ic_explosion,"10-13    Artefacto explosivo"));
+        list.add(new ListadoCodigoItem(R.drawable.ic_plane_crash,"10-14    Accidente aéreo"));
+        list.add(new ListadoCodigoItem(R.drawable.ic_simulacro,"10-15    Simulacro"));
+
+        mRecyclerView = findViewById(R.id.listadoCodigosRecyclerView);
+        mRecyclerView.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(this);
+        mAdapter = new ListadoCodigoAdapter(list);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setAdapter(mAdapter);
+
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -99,5 +131,19 @@ public class ListadoCodigos extends AppCompatActivity {
         else{
             return adbt.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
         }
+    }
+    //Método que guarda el estado actual de la aplicación, para ser restaurado posteriormente
+    @Override
+    protected void onSaveInstanceState(Bundle outState){
+        //outState.putIntArray("posiciones",values);
+        //outState.putInt("marcador",numero_jugadas);
+        super.onSaveInstanceState(outState);
+    }
+    //Método que restaura el estado de la aplicación guardado previamente
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        //values = savedInstanceState.getIntArray("posiciones");
+        //numero_jugadas = savedInstanceState.getInt("marcador");
     }
 }

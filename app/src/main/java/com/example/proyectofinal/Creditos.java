@@ -99,4 +99,18 @@ public class Creditos extends AppCompatActivity {
             return adbt.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
         }
     }
+    //Método que guarda el estado actual de la aplicación, para ser restaurado posteriormente
+    @Override
+    protected void onSaveInstanceState(Bundle outState){
+        //outState.putIntArray("posiciones",values);
+        //outState.putInt("marcador",numero_jugadas);
+        super.onSaveInstanceState(outState);
+    }
+    //Método que restaura el estado de la aplicación guardado previamente
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        //values = savedInstanceState.getIntArray("posiciones");
+        //numero_jugadas = savedInstanceState.getInt("marcador");
+    }
 }
