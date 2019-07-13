@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -29,15 +30,16 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapaFragment extends Fragment {
-
-    public MapaFragment() {
-        // Required empty public constructor
+    double fuegoCoordenadaX;
+    double fuegoCoordenadaY;
+    public MapaFragment(double x, double y) {
+        fuegoCoordenadaX = x;
+        fuegoCoordenadaY = y;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -45,6 +47,7 @@ public class MapaFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_mapa, container, false);
+        LocationManager myLocManager;
 
         SupportMapFragment MapaFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.mapa);  //use SuppoprtMapaFragment for using in fragment instead of activity  MapaFragment = activity   SupportMapaFragment = fragment
         MapaFragment.getMapAsync(new OnMapReadyCallback() {
@@ -70,7 +73,7 @@ public class MapaFragment extends Fragment {
                         .icon(bitmapDescriptorFromVector(getActivity(),R.drawable.logo_bomberos_mapa)));
 
                 mMap.addMarker(new MarkerOptions()
-                        .position(new LatLng(-37.0876102,-72.5515041))
+                        .position(new LatLng(fuegoCoordenadaX,fuegoCoordenadaY))
                         .title("Incendio")
                         .icon(bitmapDescriptorFromVector(getActivity(),R.drawable.fuego)));
 
