@@ -37,7 +37,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Vector;
@@ -62,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
     Integer asistentes_solicitados;
     Integer asistentes_actuales;
     Integer cantidad_alertas;
+    String fecha_alerta;
     ArrayList<ListadoAlertaItem> list;
     SharedPreferences settings;
     //Variables para el manejo de la barra de navegación
@@ -158,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onResponse(JSONArray response) {
                         Log.e("Rest Response", response.toString());
                         try {
-                            for( int i = 0; i < response.length(); i++){
+                            for( int i = response.length()-1; i >= 0 ; i--){
                                 // Loop through the array elements
                                 tv = new TextView[response.length()];
                                 // Get current json object
@@ -187,9 +190,13 @@ public class MainActivity extends AppCompatActivity {
                                 asistentes_solicitados = x.getInt("asistentesSolicitados");
                                 asistentes_actuales = x.getInt("asistentesActuales");
                                 cantidad_alertas = response.length();
-                                _cantidad_alertas.setText("Cantidad de alertas diarias: "+String.valueOf(cantidad_alertas));
-                                list.add(new ListadoAlertaItem(nombre_alerta.lastElement(),tipo_alerta.lastElement(),detalle_alerta,direccion_alerta,String.valueOf(asistentes_solicitados),String.valueOf(asistentes_actuales)));
+                                fecha_alerta = x.getString("fecha");
+                                _cantidad_alertas.setText("Alertas últimas 24 horas: "+String.valueOf(cantidad_alertas));
+                                list.add(new ListadoAlertaItem(nombre_alerta.lastElement(),tipo_alerta.lastElement(),detalle_alerta,direccion_alerta,String.valueOf(asistentes_solicitados),String.valueOf(asistentes_actuales),fecha_alerta));
                                 Log.d("DIRECCION EN RESPONSE",String.valueOf(list.size()));
+                            }
+                            if (response.length() == 0){
+                                _cantidad_alertas.setText("No existen alertas en las últimas 24 horas.");
                             }
                             addFragment(new MapaFragment(alertaCoordenadaX,alertaCoordenadaY,nombre_alerta,tipo_alerta), false, "one");
                             mRecyclerView.setHasFixedSize(true);

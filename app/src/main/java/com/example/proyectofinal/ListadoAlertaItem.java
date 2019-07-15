@@ -1,14 +1,15 @@
 package com.example.proyectofinal;
 
 public class ListadoAlertaItem {
-    private String nombre,tipo,detalle,direccion,asistentesSolicitados,asistentesActuales;
-    public ListadoAlertaItem( String pnombre, String ptipo, String pdetalle, String pdireccion, String pasistentesSolicitados, String pasistentesActuales){
+    private String nombre,tipo, detalle, direccion, asistentesSolicitados, asistentesActuales, fecha;
+    public ListadoAlertaItem( String pnombre, String ptipo, String pdetalle, String pdireccion, String pasistentesSolicitados, String pasistentesActuales, String pfecha){
         nombre = pnombre;
         tipo = ptipo;
         detalle = pdetalle;
         direccion = pdireccion;
         asistentesSolicitados = pasistentesSolicitados;
         asistentesActuales = pasistentesActuales;
+        fecha = pfecha;
     }
 
     public String getNombre() {
@@ -57,5 +58,13 @@ public class ListadoAlertaItem {
 
     public void setAsistentesActuales(String asistentesActuales) {
         this.asistentesActuales = asistentesActuales;
+    }
+
+    public String getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
     }
 }

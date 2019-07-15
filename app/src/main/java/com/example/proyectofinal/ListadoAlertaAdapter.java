@@ -46,7 +46,7 @@ public class ListadoAlertaAdapter extends RecyclerView.Adapter<ListadoAlertaAdap
     @Override
     public void onBindViewHolder(ListadoAlertaViewHolder holder, int i) {
         ListadoAlertaItem current = mList.get(i);
-        holder.mNombre.setText(current.getNombre()+": "+current.getTipo());
+        holder.mNombre.setText(current.getFecha().substring(8,10)+"/"+current.getFecha().substring(5,7)+" "+current.getNombre()+": "+current.getTipo()+" "+current.getFecha().substring(11,16));
         holder.mDetalle.setText(current.getDetalle());
         holder.mDireccion.setText("Dirección: "+current.getDireccion());
         holder.mAsistentesSolicitados.setText("Asistentes : "+current.getAsistentesActuales()+"/"+current.getAsistentesSolicitados());
