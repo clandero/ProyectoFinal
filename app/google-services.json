@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "88592848214",
+    "firebase_url": "https://bombermans-deb83.firebaseio.com",
+    "project_id": "bombermans-deb83",
+    "storage_bucket": "bombermans-deb83.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:88592848214:android:caec7c0967722ca8",
+        "android_client_info": {
+          "package_name": "com.example.proyectofinal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "88592848214-g3pnim2drum8l8ndvt96a0bg3jcvbm25.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.proyectofinal",
+            "certificate_hash": "d55364f4fd6648104e2b03eb40874921190996e8"
+          }
+        },
+        {
+          "client_id": "88592848214-51feb95npf8u08ttucmiiah8ek2vb1tj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBm8PpapAzCJ4atwazHQ7-ZSDluw5e15TU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "88592848214-51feb95npf8u08ttucmiiah8ek2vb1tj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

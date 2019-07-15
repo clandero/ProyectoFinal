@@ -2,4 +2,6 @@
     <string name="app_name">Sistema de comandancia de bomberos</string>
     <string name="Open">ProyectoFinal</string>
     <string name="Close">ProyectoFinal</string>
+    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+    <string name="fcm_message">FCM Message</string>
 </resources>

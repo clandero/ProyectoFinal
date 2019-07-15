@@ -15,7 +15,20 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning"
         tools:targetApi="m">
-        <activity android:name=".Creditos"></activity>
+        <service
+            android:name=".MyFirebaseMessagingService"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorPrimaryDark" />
+
+        <activity android:name=".Creditos" />
         <activity android:name=".Instrucciones" />
         <activity android:name=".ListadoCodigos" />
         <activity android:name=".Notificaciones" />
@@ -41,6 +54,8 @@
             </intent-filter
             -->
         </activity>
+
+
     </application>
 
 </manifest>
