@@ -6,4 +6,5 @@
     <color name="colorFondoAlerta">#FFF8F7</color>
     <color name="colorNombreAlerta">#F0553E</color>
     <color name="colorAlertas">#673AB7</color>
+    <color name="colorNegro">#000000</color>
 </resources>

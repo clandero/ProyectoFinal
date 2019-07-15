@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,12 +30,18 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.Vector;
+
 public class MapaFragment extends Fragment {
-    double fuegoCoordenadaX;
-    double fuegoCoordenadaY;
-    public MapaFragment(double x, double y) {
-        fuegoCoordenadaX = x;
-        fuegoCoordenadaY = y;
+    Vector<Double> alertaCoordenadaX;
+    Vector<Double> alertaCoordenadaY;
+    Vector<String> nombreAlerta;
+    Vector<String> tipoAlerta;
+    public MapaFragment(Vector<Double> x, Vector<Double> y, Vector<String> z, Vector<String> t) {
+        alertaCoordenadaX = x;
+        alertaCoordenadaY = y;
+        nombreAlerta = z;
+        tipoAlerta = t;
     }
 
     @Override
@@ -71,11 +78,13 @@ public class MapaFragment extends Fragment {
                         .title("Cuerpo De Bomberos 1ra Compañía Arturo Prat De Yumbel")
                         .snippet("Punto de encuentro")
                         .icon(bitmapDescriptorFromVector(getActivity(),R.drawable.logo_bomberos_mapa)));
-
-                mMap.addMarker(new MarkerOptions()
-                        .position(new LatLng(fuegoCoordenadaX,fuegoCoordenadaY))
-                        .title("Incendio"));
-
+                for(int i = alertaCoordenadaX.size()-1; i >= 0; i--) {
+                    mMap.addMarker(new MarkerOptions()
+                            .position(new LatLng(alertaCoordenadaX.elementAt(i), alertaCoordenadaY.elementAt(i)))
+                            .title(nombreAlerta.elementAt(i))
+                            .snippet(tipoAlerta.elementAt(i)));
+                    Log.d("EN FRAGMENT: ", nombreAlerta.elementAt(i));
+                }
                 mMap.addMarker(new MarkerOptions()
                         .position(new LatLng(-37.0776102,-72.5415041))
                         .title("Bombero 1")

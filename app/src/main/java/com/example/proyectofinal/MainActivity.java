@@ -21,6 +21,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -35,8 +37,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Vector;
 
 import static com.example.proyectofinal.R.id.navigation_header_role;
 import static com.example.proyectofinal.R.id.navigation_header_username;
@@ -44,34 +48,30 @@ import static com.example.proyectofinal.R.id.start;
 
 public class MainActivity extends AppCompatActivity {
     //Username y Role del usuario en la barra de navegación
-    TextView _username;
-    TextView _role;
-    TextView _tipo_alerta;
-    TextView _nombre_alerta;
-    TextView _direccion_alerta;
-    TextView _detalle_alerta;
-    TextView _asistentes_solicitados;
-    TextView _asistentes_actuales;
     TextView _cantidad_alertas;
     TextView[] tv;
     Button _logout;
     String username;
     String role;
-    String tipo_alerta;
-    String nombre_alerta;
     String direccion_alerta;
-    Double fuegoCoordenadaX;
-    Double fuegoCoordenadaY;
+    Vector<String> nombre_alerta;
+    Vector<Double> alertaCoordenadaX;
+    Vector<Double> alertaCoordenadaY;
+    Vector<String> tipo_alerta;
     String detalle_alerta;
     Integer asistentes_solicitados;
     Integer asistentes_actuales;
     Integer cantidad_alertas;
+    ArrayList<ListadoAlertaItem> list;
     SharedPreferences settings;
     //Variables para el manejo de la barra de navegación
     private DrawerLayout dl;
     private ActionBarDrawerToggle adbt;
     private NavigationView view;
     private View header;
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,19 +90,17 @@ public class MainActivity extends AppCompatActivity {
         //Barra de navegación
         NavigationView nav_view = findViewById(R.id.nav_view);
         header = nav_view.getHeaderView(0);
-        _username = header.findViewById(navigation_header_username);
-        _role = header.findViewById(navigation_header_role);
-        _username.setText(username);
-        _role.setText(role);
-        _tipo_alerta = findViewById(R.id.tipo_alerta);
-        _nombre_alerta = findViewById(R.id.nombre_alerta);
-        _direccion_alerta = findViewById(R.id.direccion_alerta);
-        _detalle_alerta = findViewById(R.id.detalle_alerta);
-        _asistentes_solicitados = findViewById(R.id.asistentes_solicitados);
-        _asistentes_actuales = findViewById(R.id.asistentes_actuales);
         _cantidad_alertas = findViewById(R.id.cantidad_alertas);
+        nombre_alerta = new Vector<String>();
+        alertaCoordenadaX = new Vector<Double>();
+        alertaCoordenadaY = new Vector<Double>();
+        tipo_alerta = new Vector<String>();
+        list = new ArrayList<>();
         fetchAlert();
-        Log.d("DIRECCIONNNNN",String.valueOf(fuegoCoordenadaX));
+        mRecyclerView = findViewById(R.id.listadoAlertasRecyclerView);
+        mLayoutManager = new LinearLayoutManager(this);
+        mAdapter = new ListadoAlertaAdapter(list);
+        Log.d("DIRECCION EN MAIN",String.valueOf(list.size()));
         nav_view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -159,45 +157,45 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONArray response) {
                         Log.e("Rest Response", response.toString());
-                        try{
-                            //for(int i=0;i<response.length();i++){
-                            // Loop through the array elements
-                            tv = new TextView[response.length()];
-                            // Get current json object
-                            JSONObject x = response.getJSONObject(response.length()-1);
-                            // Get the current student (json object) data
-                            tipo_alerta = x.getString("tipoalerta");
-                            nombre_alerta = x.getString("nombre");
-                            fuegoCoordenadaX = x.getDouble("coordenadaX");
-                            Log.d("DIRECCIONNNNN2",String.valueOf(fuegoCoordenadaX));
-                            fuegoCoordenadaY = x.getDouble("coordenadaY");
-                            try{
-                                Geocoder geocoder= new Geocoder(getApplicationContext(), Locale.getDefault());
-                                List<Address> addresses = geocoder.getFromLocation(fuegoCoordenadaX,fuegoCoordenadaY,1);
-                                if(addresses.size()>0){
-                                    Address address = addresses.get(0);
-                                    direccion_alerta = address.getAddressLine(0);
-                                    Log.d("DIRECCIONCOMPLETA",direccion_alerta);
+                        try {
+                            for( int i = 0; i < response.length(); i++){
+                                // Loop through the array elements
+                                tv = new TextView[response.length()];
+                                // Get current json object
+                                JSONObject x = response.getJSONObject(i);
+                                // Get the current student (json object) data
+                                tipo_alerta.add(x.getString("tipoalerta"));
+                                nombre_alerta.add(x.getString("nombre"));
+                                alertaCoordenadaX.add(x.getDouble("coordenadaX"));
+                                Log.d("DIRECCIONNNNN2", String.valueOf(alertaCoordenadaX.lastElement()));
+                                alertaCoordenadaY.add(x.getDouble("coordenadaY"));
+                                try {
+                                    Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
+                                    List<Address> addresses = geocoder.getFromLocation(alertaCoordenadaX.lastElement(), alertaCoordenadaY.lastElement(), 1);
+                                    if (addresses.size() > 0) {
+                                        Address address = addresses.get(0);
+                                        direccion_alerta = address.getAddressLine(0);
+                                        Log.d("DIRECCIONCOMPLETA", direccion_alerta);
+                                    }
+
+
+                                } catch (IOException ex) {
+                                    ex.printStackTrace();
                                 }
 
-
-                            }catch(IOException ex){
-                                ex.printStackTrace();
+                                detalle_alerta = x.getString("detalle");
+                                asistentes_solicitados = x.getInt("asistentesSolicitados");
+                                asistentes_actuales = x.getInt("asistentesActuales");
+                                cantidad_alertas = response.length();
+                                _cantidad_alertas.setText("Cantidad de alertas diarias: "+String.valueOf(cantidad_alertas));
+                                list.add(new ListadoAlertaItem(nombre_alerta.lastElement(),tipo_alerta.lastElement(),detalle_alerta,direccion_alerta,String.valueOf(asistentes_solicitados),String.valueOf(asistentes_actuales)));
+                                Log.d("DIRECCION EN RESPONSE",String.valueOf(list.size()));
                             }
+                            addFragment(new MapaFragment(alertaCoordenadaX,alertaCoordenadaY,nombre_alerta,tipo_alerta), false, "one");
+                            mRecyclerView.setHasFixedSize(true);
+                            mRecyclerView.setLayoutManager(mLayoutManager);
+                            mRecyclerView.setAdapter(mAdapter);
 
-                            detalle_alerta = x.getString("detalle");
-                            asistentes_solicitados = x.getInt("asistentesSolicitados");
-                            asistentes_actuales = x.getInt("asistentesActuales");
-                            cantidad_alertas = response.length();
-                            _tipo_alerta.setText(tipo_alerta);
-                            _nombre_alerta.setText(nombre_alerta);
-                            _detalle_alerta.setText(detalle_alerta);
-                            _direccion_alerta.setText("Dirección: "+String.valueOf(direccion_alerta));
-                            _asistentes_solicitados.setText("Asistentes solicitados: "+String.valueOf(asistentes_solicitados));
-                            _asistentes_actuales.setText("Asistentes actuales: "+String.valueOf(asistentes_actuales));
-                            _cantidad_alertas.setText("Cantidad de alertas diarias: "+String.valueOf(cantidad_alertas));
-                            addFragment(new MapaFragment(fuegoCoordenadaX,fuegoCoordenadaY), false, "one");
-                            //}
                         }catch (JSONException e){
                             e.printStackTrace();
                         }
