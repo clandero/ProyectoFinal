@@ -1,10 +1,18 @@
 package com.example.proyectofinal;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,7 +24,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -66,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
     Integer cantidad_alertas;
     String fecha_alerta;
     ArrayList<ListadoAlertaItem> list;
+    MapaFragment mf;
     SharedPreferences settings;
     //Variables para el manejo de la barra de navegación
     private DrawerLayout dl;
@@ -198,7 +209,8 @@ public class MainActivity extends AppCompatActivity {
                             if (response.length() == 0){
                                 _cantidad_alertas.setText("No existen alertas en las últimas 24 horas.");
                             }
-                            addFragment(new MapaFragment(alertaCoordenadaX,alertaCoordenadaY,nombre_alerta,tipo_alerta), false, "one");
+                            mf = new MapaFragment(alertaCoordenadaX,alertaCoordenadaY,nombre_alerta,tipo_alerta);
+                            addFragment(mf, false, "one");
                             mRecyclerView.setHasFixedSize(true);
                             mRecyclerView.setLayoutManager(mLayoutManager);
                             mRecyclerView.setAdapter(mAdapter);
@@ -233,6 +245,7 @@ public class MainActivity extends AppCompatActivity {
             return adbt.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
         }
     }
+
     //Método que guarda el estado actual de la aplicación, para ser restaurado posteriormente
     @Override
     protected void onSaveInstanceState(Bundle outState){

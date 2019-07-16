@@ -27,27 +27,29 @@
                 android:id="@+id/fragment_vista"
                 android:orientation="vertical">
             </LinearLayout>
-            <RelativeLayout
-                xmlns:android="http://schemas.android.com/apk/res/android"
+
+            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/colorPrimary"
                 android:padding="7dp">
+
                 <TextView
+                    android:id="@+id/cantidad_alertas"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
+                    android:layout_alignParentLeft="true"
                     android:layout_marginLeft="5dp"
-                    android:textStyle="bold"
+                    android:layout_marginTop="5dp"
                     android:textColor="@color/colorFondoAlerta"
                     android:textSize="20dp"
-                    android:layout_alignParentLeft="true"
-                    android:id="@+id/cantidad_alertas"/>
+                    android:textStyle="bold" />
+
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_alignParentRight="true"
-                    android:src="@drawable/abajo"/>
+                    android:src="@drawable/abajo" />
             </RelativeLayout>
             <ScrollView
                 android:layout_width="match_parent"
