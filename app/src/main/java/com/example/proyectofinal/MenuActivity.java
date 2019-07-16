@@ -34,6 +34,8 @@ public class MenuActivity extends AppCompatActivity {
     private EditText username;
     private EditText password;
     private Button login;
+    private String token;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +63,7 @@ public class MenuActivity extends AppCompatActivity {
         });
     }
 
-    private void Validate(final String username, String password) throws JSONException {
+    private void Validate(final String username, final String password) throws JSONException {
         final RequestQueue requestQueue = Volley.newRequestQueue(this);
         JSONObject x = new JSONObject();
         x.put("username",username);
@@ -105,7 +107,6 @@ public class MenuActivity extends AppCompatActivity {
 
                                 );
                                 requestQueue.add(objectRequest);
-
                                 //Recuperación del token de Firebase y actualización en BD
                                 FirebaseInstanceId.getInstance().getInstanceId()
                                         .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
@@ -117,13 +118,44 @@ public class MenuActivity extends AppCompatActivity {
                                                 }
 
                                                 // Get new Instance ID token
-                                                String token = task.getResult().getToken();
+                                                token = task.getResult().getToken();
 
                                                 // Log and toast
                                                 String msg = getString(R.string.msg_token_fmt, token);
                                                 Log.d("FBconnection", msg);
+
+                                                JSONObject x1 = new JSONObject();
+                                                try {
+                                                    x1.put("firebase_token",token);
+                                                    x1.put("username",username);
+                                                    Log.d("FBdata",token);
+                                                } catch (JSONException e) {
+                                                    e.printStackTrace();
+                                                }
+
+                                                final JsonObjectRequest firebase_request= new JsonObjectRequest(
+                                                        Request.Method.PUT,
+                                                        "http://clandero.pythonanywhere.com/user/" + username,
+                                                        x1,
+                                                        new Response.Listener<JSONObject>() {
+                                                            @Override
+                                                            public void onResponse(JSONObject response) {
+                                                                Log.d("FBTOK","DONE" );
+                                                            }
+                                                        },
+                                                        new Response.ErrorListener() {
+                                                            @Override
+                                                            public void onErrorResponse(VolleyError error) {
+                                                                Log.e("Rest FBTOK Response", error.toString());
+                                                            }
+                                                        }
+
+                                                );
+                                                requestQueue.add(firebase_request);
                                             }
                                         });
+
+
 
                                 Intent i = new Intent(MenuActivity.this,MainActivity.class);
                                 //i.putExtra("username",username);
