@@ -14,6 +14,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ListadoCodigos">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Listado de códigos"
+            android:textAlignment="center"
+            android:textSize="30sp" />
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -21,22 +27,6 @@
             android:scrollbars="vertical"
             android:background="@android:color/darker_gray"
             android:id="@+id/listadoCodigosRecyclerView"/>
-
-        <!--LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical|center|center_horizontal"
-            android:orientation="vertical"
-            tools:ignore="MissingConstraints"
-            tools:layout_editor_absoluteX="8dp"
-            tools:layout_editor_absoluteY="8dp">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:text="Listado de códigos"
-                android:textAlignment="center"
-                android:textSize="30sp" />
-        </LinearLayout-->
     </RelativeLayout>
     <android.support.design.widget.NavigationView
         android:layout_width="wrap_content"
