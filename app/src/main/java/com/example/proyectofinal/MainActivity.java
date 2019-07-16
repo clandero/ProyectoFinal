@@ -1,7 +1,9 @@
 package com.example.proyectofinal;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -30,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
 
+    private NetworkChangeReceiver netchange = new NetworkChangeReceiver();
+
     //Username y Role del usuario en la barra de navegación
     TextView _username;
     TextView _role;
@@ -46,6 +50,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Chequea conexión con datos
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        netchange = new NetworkChangeReceiver();
+        this.registerReceiver(netchange, filter);
+
         //Obtiene de SharedPreferences los datos del usuario que inicio sesión
         Intent i = getIntent();
         settings = getSharedPreferences("preferences",0);
@@ -162,6 +172,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         Log.d("baja","offline a la BD");
         super.onDestroy();
+        if (netchange != null) {
+            this.unregisterReceiver(netchange);
+        }
+
 
     }
 }
