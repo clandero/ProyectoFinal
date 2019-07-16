@@ -19,10 +19,15 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+
+import org.json.JSONObject;
 
 import static com.example.proyectofinal.R.id.navigation_header_role;
 import static com.example.proyectofinal.R.id.navigation_header_username;
@@ -55,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
         IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         netchange = new NetworkChangeReceiver();
         this.registerReceiver(netchange, filter);
+
+        final RequestQueue requestQueue = Volley.newRequestQueue(this);
 
         //Obtiene de SharedPreferences los datos del usuario que inicio sesión
         Intent i = getIntent();
@@ -102,38 +109,33 @@ public class MainActivity extends AppCompatActivity {
                 else if(id == R.id.logout_item){
                     SharedPreferences.Editor editor = settings.edit();
                     editor.clear().commit();
-                    Intent i = new Intent(MainActivity.this, MenuActivity.class);
-                    startActivity(i);
-                    MainActivity.this.finish();
+
+                    //Cambio a OFFLINE del usuario
+                    JsonObjectRequest objectRequest= new JsonObjectRequest(
+                            Request.Method.PUT,
+                            "http://clandero.pythonanywhere.com/changestatus/" + username,
+                            null,
+                            new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    Log.d("LOGOF","cambio de estado" );
+                                    Intent i = new Intent(MainActivity.this, MenuActivity.class);
+                                    startActivity(i);
+                                    MainActivity.this.finish();
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Log.e("Rest Response", error.toString());
+                                }
+                            }
+
+                    );
+                    requestQueue.add(objectRequest);
+
                 }
                 return false;
-            }
-        });
-        token = findViewById(R.id.log_token);
-        token.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Get token
-                // [START retrieve_current_token]
-                FirebaseInstanceId.getInstance().getInstanceId()
-                        .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                                if (!task.isSuccessful()) {
-                                    Log.w(TAG, "getInstanceId failed", task.getException());
-                                    return;
-                                }
-
-                                // Get new Instance ID token
-                                String token = task.getResult().getToken();
-
-                                // Log and toast
-                                String msg = getString(R.string.msg_token_fmt, token);
-                                Log.d(TAG, msg);
-                                Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                // [END retrieve_current_token]
             }
         });
     }

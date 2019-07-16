@@ -10,12 +10,22 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -38,6 +48,9 @@ public class Instrucciones extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_instrucciones);
+
+        final RequestQueue requestQueue = Volley.newRequestQueue(this);
+
         Intent i = getIntent();
         settings = getSharedPreferences("preferences",0);
         username = settings.getString("username", " ");
@@ -81,9 +94,29 @@ public class Instrucciones extends AppCompatActivity {
                     //Toast.makeText(MainActivity.this, "Item 4", Toast.LENGTH_SHORT).show();
                     SharedPreferences.Editor editor = settings.edit();
                     editor.clear().commit();
-                    Intent i = new Intent(Instrucciones.this, MenuActivity.class);
-                    startActivity(i);
-                    Instrucciones.this.finish();
+                    JsonObjectRequest objectRequest= new JsonObjectRequest(
+                            Request.Method.PUT,
+                            "http://clandero.pythonanywhere.com/changestatus/" + username,
+                            null,
+                            new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    Log.d("LOGOF","cambio de estado" );
+                                    Intent i = new Intent(Instrucciones.this, MenuActivity.class);
+                                    startActivity(i);
+                                    Instrucciones.this.finish();
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Log.e("Rest Response", error.toString());
+                                }
+                            }
+
+                    );
+                    requestQueue.add(objectRequest);
+
                 }
                 return false;
             }

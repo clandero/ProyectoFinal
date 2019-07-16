@@ -3,6 +3,7 @@ package com.example.proyectofinal;
 import android.app.VoiceInteractor;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +20,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -78,12 +83,55 @@ public class MenuActivity extends AppCompatActivity {
                                 editor.putString("username",username);
                                 editor.putString("role",response.getString("role"));
                                 editor.commit();
+
+                                //Cambio a ONLINE
+                                JsonObjectRequest objectRequest= new JsonObjectRequest(
+                                        Request.Method.PUT,
+                                        "http://clandero.pythonanywhere.com/changestatus/" + username,
+                                        null,
+                                        new Response.Listener<JSONObject>() {
+                                            @Override
+                                            public void onResponse(JSONObject response) {
+                                                Log.d("LOGOF","cambio de estado" );
+
+                                            }
+                                        },
+                                        new Response.ErrorListener() {
+                                            @Override
+                                            public void onErrorResponse(VolleyError error) {
+                                                Log.e("Rest Response", error.toString());
+                                            }
+                                        }
+
+                                );
+                                requestQueue.add(objectRequest);
+
+                                //Recuperación del token de Firebase y actualización en BD
+                                FirebaseInstanceId.getInstance().getInstanceId()
+                                        .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                                                if (!task.isSuccessful()) {
+                                                    Log.w("FBconnection", "getInstanceId failed", task.getException());
+                                                    return;
+                                                }
+
+                                                // Get new Instance ID token
+                                                String token = task.getResult().getToken();
+
+                                                // Log and toast
+                                                String msg = getString(R.string.msg_token_fmt, token);
+                                                Log.d("FBconnection", msg);
+                                            }
+                                        });
+
                                 Intent i = new Intent(MenuActivity.this,MainActivity.class);
                                 //i.putExtra("username",username);
                                 //i.putExtra("role",response.getString("role"));
                                 Log.d("LOGIN","Username is "+username+" and role is "+response.getString("role"));
                                 startActivity(i);
                                 MenuActivity.this.finish();
+
                             }
                             else if(response.getInt("rsp")==-1){
                                 Toast.makeText(MenuActivity.this, "Nombre de usuario y/o contraseña incorrectos", Toast.LENGTH_SHORT).show();

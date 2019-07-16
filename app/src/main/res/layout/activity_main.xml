@@ -21,11 +21,6 @@
             tools:layout_editor_absoluteX="8dp"
             tools:layout_editor_absoluteY="8dp">
 
-            <Button
-                android:id="@+id/log_token"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="LOG TOKEN" />
         </LinearLayout>
 
 

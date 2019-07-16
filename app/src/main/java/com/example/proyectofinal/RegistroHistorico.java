@@ -59,6 +59,8 @@ public class RegistroHistorico extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro_historico);
 
+        final RequestQueue requestQueue = Volley.newRequestQueue(this);
+
         Intent i = getIntent();
         settings = getSharedPreferences("preferences",0);
         username = settings.getString("username", " ");
@@ -73,9 +75,6 @@ public class RegistroHistorico extends AppCompatActivity {
         header = nav_view.getHeaderView(0);
         _username = header.findViewById(navigation_header_username);
         _role = header.findViewById(navigation_header_role);
-
-
-
 
         //fetchAlerts();
 
@@ -109,9 +108,29 @@ public class RegistroHistorico extends AppCompatActivity {
                     //Toast.makeText(MainActivity.this, "Item 4", Toast.LENGTH_SHORT).show();
                     SharedPreferences.Editor editor = settings.edit();
                     editor.clear().commit();
-                    Intent i = new Intent(RegistroHistorico.this, MenuActivity.class);
-                    startActivity(i);
-                    RegistroHistorico.this.finish();
+                    JsonObjectRequest objectRequest= new JsonObjectRequest(
+                            Request.Method.PUT,
+                            "http://clandero.pythonanywhere.com/changestatus/" + username,
+                            null,
+                            new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    Log.d("LOGOF","cambio de estado" );
+                                    Intent i = new Intent(RegistroHistorico.this, MenuActivity.class);
+                                    startActivity(i);
+                                    RegistroHistorico.this.finish();
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Log.e("Rest Response", error.toString());
+                                }
+                            }
+
+                    );
+                    requestQueue.add(objectRequest);
+
                 }
                 return false;
             }
@@ -125,7 +144,6 @@ public class RegistroHistorico extends AppCompatActivity {
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
-        final RequestQueue requestQueue = Volley.newRequestQueue(this);
         final JsonArrayRequest objectRequest = new JsonArrayRequest(
                 Request.Method.GET,
                 "http://clandero.pythonanywhere.com/alert/all",

@@ -8,12 +8,22 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONObject;
 
 import static com.example.proyectofinal.R.id.navigation_header_role;
 import static com.example.proyectofinal.R.id.navigation_header_username;
@@ -31,6 +41,9 @@ public class Creditos extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_creditos);
+
+        final RequestQueue requestQueue = Volley.newRequestQueue(this);
+
         Intent i = getIntent();
         settings = getSharedPreferences("preferences",0);
         username = settings.getString("username", " ");
@@ -74,9 +87,30 @@ public class Creditos extends AppCompatActivity {
                     //Toast.makeText(MainActivity.this, "Item 4", Toast.LENGTH_SHORT).show();
                     SharedPreferences.Editor editor = settings.edit();
                     editor.clear().commit();
-                    Intent i = new Intent(Creditos.this, MenuActivity.class);
-                    startActivity(i);
-                    Creditos.this.finish();
+                    //Cambio a OFFLINE del usuario
+                    JsonObjectRequest objectRequest= new JsonObjectRequest(
+                            Request.Method.PUT,
+                            "http://clandero.pythonanywhere.com/changestatus/" + username,
+                            null,
+                            new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    Log.d("LOGOF","cambio de estado" );
+                                    Intent i = new Intent(Creditos.this, MenuActivity.class);
+                                    startActivity(i);
+                                    Creditos.this.finish();
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Log.e("Rest Response", error.toString());
+                                }
+                            }
+
+                    );
+                    requestQueue.add(objectRequest);
+
                 }
                 return false;
             }
