@@ -47,6 +47,4 @@ public class ListadoCodigoAdapter extends RecyclerView.Adapter<ListadoCodigoAdap
         return mList.size();
     }
 
-
-
 }

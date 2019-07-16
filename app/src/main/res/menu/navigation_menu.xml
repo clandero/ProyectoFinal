@@ -2,38 +2,38 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/mainactivity"
+        android:icon="@drawable/ic_place_black_24dp"
         android:title="Mapa de situación actual">
-
     </item>
     <item
         android:id="@+id/historico"
+        android:icon="@drawable/ic_history_black_24dp"
         android:title="Registro Histórico">
-
     </item>
     <item
         android:id="@+id/notificaciones"
+        android:icon="@drawable/ic_notifications_active_black_24dp"
         android:title="Notificaciones">
-
     </item>
     <item
         android:id="@+id/codigos"
+        android:icon="@drawable/ic_warning_black_24dp"
         android:title="Listado de códigos">
-
     </item>
     <item
+        android:icon="@drawable/ic_question_mark"
         android:id="@+id/instrucciones"
         android:title="Instrucciones">
-
     </item>
     <item
+        android:icon="@drawable/ic_contacts_black_24dp"
         android:id="@+id/creditos"
         android:title="Créditos">
-
     </item>
     <item
+        android:icon="@drawable/ic_exit_to_app_black_24dp"
         android:id="@+id/logout_item"
         android:title="Cerrar Sesión">
-
     </item>
 
 </menu>
