@@ -8,9 +8,6 @@
     android:orientation="vertical"
     android:id="@+id/dl">
     <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".Creditos">
@@ -28,6 +25,67 @@
                 android:text="Créditos"
                 android:textAlignment="center"
                 android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/credits_parragraph"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="A los desarrolladores de esta aplicación"
+                android:textAlignment="center" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="30dp" />
+
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                app:srcCompat="@drawable/foto2015" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Vanessa Arriagada Pérez"
+                android:textAlignment="center" />
+
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                app:srcCompat="@drawable/foto2014442936" />
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Carlos Landero Ambiado"
+                android:textAlignment="center" />
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                app:srcCompat="@drawable/fotochoche" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Sergio Saavedra Muñoz"
+                android:textAlignment="center" />
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="30dp" />
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ingeniería Civil Informática - UdeC"
+                android:textAlignment="center"
+                android:textSize="20sp" />
+
         </LinearLayout>
     </RelativeLayout>
     <android.support.design.widget.NavigationView

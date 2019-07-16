@@ -89,6 +89,7 @@ public class ListadoCodigos extends AppCompatActivity {
                 return false;
             }
         });
+
         ArrayList<ListadoCodigoItem> list = new ArrayList<>();
         list.add(new ListadoCodigoItem(R.drawable.ic_incendio,"10-0    Fuego o humo en construcción"));
         list.add(new ListadoCodigoItem(R.drawable.ic_car_on_fire,"10-1    Fuego en vehículo"));
