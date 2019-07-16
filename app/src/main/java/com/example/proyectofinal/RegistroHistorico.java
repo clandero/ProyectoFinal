@@ -8,6 +8,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -29,6 +31,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 import static com.example.proyectofinal.R.id.center;
 import static com.example.proyectofinal.R.id.navigation_header_role;
 import static com.example.proyectofinal.R.id.navigation_header_username;
@@ -46,6 +50,10 @@ public class RegistroHistorico extends AppCompatActivity {
     private NavigationView view;
     private View header;
     SharedPreferences settings;
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+    ArrayList<HistoricoItem> list;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,9 +73,11 @@ public class RegistroHistorico extends AppCompatActivity {
         header = nav_view.getHeaderView(0);
         _username = header.findViewById(navigation_header_username);
         _role = header.findViewById(navigation_header_role);
-        list_alerts = findViewById(R.id.list_alerts);
 
-        fetchAlerts();
+
+
+
+        //fetchAlerts();
 
         nav_view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -108,6 +118,53 @@ public class RegistroHistorico extends AppCompatActivity {
         });
         _username.setText(username);
         _role.setText(role);
+        list = new ArrayList<>();
+        mAdapter = new HistoricoAdapter(list);
+        mLayoutManager = new LinearLayoutManager(RegistroHistorico.this);
+        mRecyclerView = findViewById(R.id.historicoRecyclerView);
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setAdapter(mAdapter);
+        final RequestQueue requestQueue = Volley.newRequestQueue(this);
+        final JsonArrayRequest objectRequest = new JsonArrayRequest(
+                Request.Method.GET,
+                "http://clandero.pythonanywhere.com/alert/all",
+                null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        Log.e("Rest Response", response.toString());
+                        for(int i=0;i<response.length();i++){
+                            try {
+                                JSONObject x = response.getJSONObject(i);
+                                //Log.d("ITEM",x.toString());
+                                list.add(new HistoricoItem(x.getString("nombre"), x.getString("tipoalerta"), x.getDouble("coordenadaX"), x.getDouble("coordenadaY"), x.getString("detalle")));
+                                //Log.d("LIST",list.get(i).getNombre());
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        mAdapter.notifyDataSetChanged();
+
+                        //requestQueue.stop();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Rest Response", error.toString());
+                        //requestQueue.stop();
+                    }
+                });
+        requestQueue.add(objectRequest);
+        //list.add(new HistoricoItem("Alerta 1", "10-4", -34, -78, "GATICA SE SACO LA CHUCHA :^((("));
+        //mRecyclerView = findViewById(R.id.historicoRecyclerView);
+        //mRecyclerView.setHasFixedSize(true);
+        //mLayoutManager = new LinearLayoutManager(this);
+        //mAdapter = new HistoricoAdapter(list);
+        //mRecyclerView.setLayoutManager(mLayoutManager);
+        //mRecyclerView.setAdapter(mAdapter);
 
     }
 

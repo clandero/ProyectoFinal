@@ -14,21 +14,31 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".Instrucciones">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center_vertical|center|center_horizontal"
             android:orientation="vertical"
-            tools:ignore="MissingConstraints"
             tools:layout_editor_absoluteX="8dp"
-            tools:layout_editor_absoluteY="8dp">
+            tools:layout_editor_absoluteY="8dp"
+            android:gravity="center|center_horizontal|center_vertical">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:text="Instrucciones de uso"
                 android:textAlignment="center"
-                android:textSize="30sp" />
+                android:textSize="30sp"
+                android:padding="4dp"/>
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="4dp"
+                android:scrollbars="vertical"
+                android:background="@android:color/darker_gray"
+                android:id="@+id/instruccionesRecyclerView"/>
+
         </LinearLayout>
+
     </RelativeLayout>
     <android.support.design.widget.NavigationView
         android:layout_width="wrap_content"
