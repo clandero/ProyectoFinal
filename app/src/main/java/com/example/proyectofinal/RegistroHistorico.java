@@ -88,10 +88,6 @@ public class RegistroHistorico extends AppCompatActivity {
                     Intent ma = new Intent(RegistroHistorico.this, MainActivity.class);
                     startActivity(ma);
                 }
-                else if(id == R.id.notificaciones){
-                    Intent not = new Intent(RegistroHistorico.this, Notificaciones.class);
-                    startActivity(not);
-                }
                 else if(id == R.id.codigos){
                     Intent cod = new Intent(RegistroHistorico.this, ListadoCodigos.class);
                     startActivity(cod);

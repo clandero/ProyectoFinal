@@ -78,10 +78,7 @@ public class Instrucciones extends AppCompatActivity {
                     Intent ma = new Intent(Instrucciones.this, MainActivity.class);
                     startActivity(ma);
                 }
-                else if(id == R.id.notificaciones){
-                    Intent not = new Intent(Instrucciones.this, Notificaciones.class);
-                    startActivity(not);
-                }
+
                 else if(id == R.id.codigos){
                     Intent cod = new Intent(Instrucciones.this, ListadoCodigos.class);
                     startActivity(cod);
@@ -124,7 +121,6 @@ public class Instrucciones extends AppCompatActivity {
         ArrayList<InstruccionesItem> list = new ArrayList<>();
         list.add(new InstruccionesItem(R.drawable.ic_place_black_24dp,"Mapa de sitaución actual","Desde aquí usted puede observar el estado actual de las emergencias en la zona, el mapa le enseñará la ubicación tanto del cuartel como de las alertas ocurridas durante las útlimas 24 horas, en las cuales usted podrá indicar si asiste o no a dicha alerta."));
         list.add(new InstruccionesItem(R.drawable.ic_history_black_24dp,"Registro histórico","Aquí puede consultar el registro histórico de alertas que han ocurrido en la zona, el tipo de alerta y el detalle de cada una, junto con su ubicación."));
-        list.add(new InstruccionesItem(R.drawable.ic_notifications_active_black_24dp,"Notificaciones","Desde aquí puede ver el historial de notificaciones respecto a alertas realizadas desde comandancia y que le han llegado a su dispositivo."));
         list.add(new InstruccionesItem(R.drawable.ic_warning_black_24dp,"Listado de códigos", "En caso de que usted olvide el significado de alguno de los códigos usados por la compañía, desde aquí puede consultarlos."));
         list.add(new InstruccionesItem(R.drawable.ic_question_mark,"Instrucciones","Si tiene dudas acerca de en qué consiste alguna de las opciones en el menú, puede consultar esta pestaña para obtener detalles generales de que funciones cumplen y cómo interacturar con estas."));
         list.add(new InstruccionesItem(R.drawable.ic_contacts_black_24dp,"Créditos","Aquí se hace mención a los desarrolladores de esta aplicación."));

@@ -156,10 +156,6 @@ public class AlertaActivity extends AppCompatActivity {
                     Intent ri = new Intent(AlertaActivity.this, RegistroHistorico.class);
                     startActivity(ri);
                 }
-                else if(id == R.id.notificaciones){
-                    Intent not = new Intent(AlertaActivity.this, Notificaciones.class);
-                    startActivity(not);
-                }
                 else if(id == R.id.codigos){
                     Intent cod = new Intent(AlertaActivity.this, ListadoCodigos.class);
                     startActivity(cod);

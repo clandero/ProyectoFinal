@@ -66,10 +66,7 @@ public class ListadoCodigos extends AppCompatActivity {
                     Intent ma = new Intent(ListadoCodigos.this, MainActivity.class);
                     startActivity(ma);
                 }
-                else if(id == R.id.notificaciones){
-                    Intent not = new Intent(ListadoCodigos.this, Notificaciones.class);
-                    startActivity(not);
-                }
+
                 else if(id == R.id.instrucciones){
                     Intent ins = new Intent(ListadoCodigos.this, Instrucciones.class);
                     startActivity(ins);

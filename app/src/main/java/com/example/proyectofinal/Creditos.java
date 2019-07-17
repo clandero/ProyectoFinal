@@ -71,10 +71,6 @@ public class Creditos extends AppCompatActivity {
                     Intent ma = new Intent(Creditos.this, MainActivity.class);
                     startActivity(ma);
                 }
-                else if(id == R.id.notificaciones){
-                    Intent not = new Intent(Creditos.this, Notificaciones.class);
-                    startActivity(not);
-                }
                 else if(id == R.id.codigos){
                     Intent cod = new Intent(Creditos.this, ListadoCodigos.class);
                     startActivity(cod);
