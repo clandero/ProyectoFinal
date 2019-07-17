@@ -90,10 +90,13 @@ public class HistoricoAdapter extends RecyclerView.Adapter<HistoricoAdapter.Hist
                 }
             }
         });
-        android.os.SystemClock.sleep(500);
+        while(m==null){
+
+        }
         current.setImagen(m);
         holder.mImagen.setImageBitmap(current.getImagen());
         Log.d("DIRECCION ADAPTER 3 ",String.valueOf(m));
+        m = null;
 
 
     }

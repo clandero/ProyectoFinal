@@ -53,6 +53,7 @@ public class MapaFragment extends Fragment implements LocationListener,OnMapRead
     GoogleMap mMap;
     MarkerOptions mMaker;
     boolean posicion_actual_encontrada;
+    Double camaraX, camaraY;
     public MapaFragment(Vector<Double> x, Vector<Double> y, Vector<String> z, Vector<String> t) {
         alertaCoordenadaX = x;
         alertaCoordenadaY = y;
@@ -73,9 +74,9 @@ public class MapaFragment extends Fragment implements LocationListener,OnMapRead
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
         }
         locationManager.removeUpdates(this);
-
+        ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         locationManager.requestLocationUpdates(
-                LocationManager.GPS_PROVIDER, 10 * 1000, 3, this);
+                LocationManager.NETWORK_PROVIDER, 10 * 1000, 3, this);
         Toast.makeText(getContext(), "Estableciendo ubicación actual", Toast.LENGTH_LONG).show();
 
     }
@@ -222,5 +223,32 @@ public class MapaFragment extends Fragment implements LocationListener,OnMapRead
                     .title("Bombero 1")
                     .icon(bitmapDescriptorFromVector(getActivity(),R.drawable.bombero)));
 
+    }
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 1: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                } else {
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
+    }
+    public void focoCamara(Double x, Double y){
+        CameraPosition googlePlex = CameraPosition.builder()
+                .target(new LatLng(x,y))
+                .zoom(12)
+                .bearing(0)
+                .tilt(45)
+                .build();
+
+        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(googlePlex), 10000, null);
     }
 }

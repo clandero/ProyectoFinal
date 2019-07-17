@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
     Integer asistentes_solicitados;
     Integer asistentes_actuales;
     Integer cantidad_alertas;
+    Integer id_alerta;
     String fecha_alerta;
     ArrayList<ListadoAlertaItem> list;
     MapaFragment mf;
@@ -113,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
         fetchAlert();
         mRecyclerView = findViewById(R.id.listadoAlertasRecyclerView);
         mLayoutManager = new LinearLayoutManager(this);
-        mAdapter = new ListadoAlertaAdapter(list);
+        mAdapter = new ListadoAlertaAdapter(list,this);
         Log.d("DIRECCION EN MAIN",String.valueOf(list.size()));
         nav_view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -202,8 +203,9 @@ public class MainActivity extends AppCompatActivity {
                                 asistentes_actuales = x.getInt("asistentesActuales");
                                 cantidad_alertas = response.length();
                                 fecha_alerta = x.getString("fecha");
+                                id_alerta = x.getInt("id");
                                 _cantidad_alertas.setText("Alertas últimas 24 horas: "+String.valueOf(cantidad_alertas));
-                                list.add(new ListadoAlertaItem(nombre_alerta.lastElement(),tipo_alerta.lastElement(),detalle_alerta,direccion_alerta,String.valueOf(asistentes_solicitados),String.valueOf(asistentes_actuales),fecha_alerta));
+                                list.add(new ListadoAlertaItem(nombre_alerta.lastElement(),tipo_alerta.lastElement(),detalle_alerta,direccion_alerta,String.valueOf(asistentes_solicitados),String.valueOf(asistentes_actuales),fecha_alerta,String.valueOf(id_alerta),username));
                                 Log.d("DIRECCION EN RESPONSE",String.valueOf(list.size()));
                             }
                             if (response.length() == 0){
