@@ -156,7 +156,7 @@ public class RegistroHistorico extends AppCompatActivity {
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
-        final RequestQueue requestQueue = Volley.newRequestQueue(this);
+
         final JsonArrayRequest objectRequest = new JsonArrayRequest(
                 Request.Method.GET,
                 "http://clandero.pythonanywhere.com/alert/all",

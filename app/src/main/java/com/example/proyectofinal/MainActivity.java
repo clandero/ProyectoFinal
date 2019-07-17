@@ -7,11 +7,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
-import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -89,6 +84,8 @@ public class MainActivity extends AppCompatActivity {
     String username;
     String role;
     String direccion_alerta;
+    TextView _username;
+    TextView _role;
     Vector<String> nombre_alerta;
     Vector<Double> alertaCoordenadaX;
     Vector<Double> alertaCoordenadaY;
@@ -134,12 +131,14 @@ public class MainActivity extends AppCompatActivity {
         adbt.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //Barra de navegación
-        _username = header.findViewById(navigation_header_username);
-        _role = header.findViewById(navigation_header_role);
-        _username.setText(username);
-        _role.setText(role);
+
         NavigationView nav_view = findViewById(R.id.nav_view);
         header = nav_view.getHeaderView(0);
+        _username = header.findViewById(R.id.navigation_header_username);
+        _role = header.findViewById(R.id.navigation_header_role);
+        _username.setText(username);
+        _role.setText(role);
+
         _cantidad_alertas = findViewById(R.id.cantidad_alertas);
         nombre_alerta = new Vector<String>();
         alertaCoordenadaX = new Vector<Double>();

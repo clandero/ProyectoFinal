@@ -4,12 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.text.TextUtils;
@@ -23,6 +17,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -34,6 +33,7 @@ import com.android.volley.toolbox.Volley;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -160,8 +160,8 @@ public class AlertaActivity extends AppCompatActivity {
                     Intent cod = new Intent(AlertaActivity.this, ListadoCodigos.class);
                     startActivity(cod);
                 }
-                else if(id == R.id.instrucciones){
-                    Intent ins = new Intent(AlertaActivity.this, Instrucciones.class);
+                else if(id == R.id.mainactivity){
+                    Intent ins = new Intent(AlertaActivity.this, MainActivity.class);
                     startActivity(ins);
                 }
                 else if(id == R.id.creditos){
