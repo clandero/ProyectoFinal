@@ -49,7 +49,7 @@ public class MapaFragment extends Fragment implements LocationListener,OnMapRead
     Vector<String> nombreAlerta;
     Vector<String> tipoAlerta;
     LocationManager locationManager;
-    double longitudeNetwork, latitudeNetwork;
+    Double longitudeNetwork, latitudeNetwork;
     GoogleMap mMap;
     MarkerOptions mMaker;
     boolean posicion_actual_encontrada;
@@ -116,8 +116,6 @@ public class MapaFragment extends Fragment implements LocationListener,OnMapRead
                 .setPositiveButton("Configuración de ubicación", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface paramDialogInterface, int paramInt) {
-                        Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                        startActivity(myIntent);
                     }
                 })
                 .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
@@ -136,7 +134,7 @@ public class MapaFragment extends Fragment implements LocationListener,OnMapRead
     public void onLocationChanged(Location location) {
         longitudeNetwork = location.getLongitude();
         latitudeNetwork = location.getLatitude();
-        if(posicion_actual_encontrada == false) {
+        if(posicion_actual_encontrada == false && longitudeNetwork!=null && mMap!=null && mMaker != null) {
             CameraPosition googlePlex = CameraPosition.builder()
                     .target(new LatLng(latitudeNetwork, longitudeNetwork))
                     .zoom(12)
@@ -150,13 +148,13 @@ public class MapaFragment extends Fragment implements LocationListener,OnMapRead
                     .icon(BitmapDescriptorFactory
                             .defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
             mMap.addMarker(mMaker);
-        }
+
 
         mMaker.position(new LatLng(latitudeNetwork,longitudeNetwork))
                 .title("Mi ubicación actual")
                 .icon(BitmapDescriptorFactory
                         .defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
-
+        }
     }
 
     @Override

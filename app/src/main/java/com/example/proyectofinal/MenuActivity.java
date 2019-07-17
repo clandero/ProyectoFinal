@@ -1,9 +1,13 @@
 package com.example.proyectofinal;
 
+import android.Manifest;
 import android.app.VoiceInteractor;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,6 +18,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -29,19 +35,29 @@ import com.google.firebase.iid.InstanceIdResult;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.invoke.ConstantCallSite;
 import java.net.URL;
 
 public class MenuActivity extends AppCompatActivity {
+    private static final int MY_PERMISSIONS_REQUEST_SEND_SMS = 1;
+    private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
+    private static final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 1;
     private EditText username;
     private EditText password;
     private Button login;
     private String token;
+    String[] PERMISSIONS = {Manifest.permission.SEND_SMS,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION};
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+
+        if(!hasPermissions(this,PERMISSIONS)){
+            ActivityCompat.requestPermissions(this,PERMISSIONS,MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
+        }
+
         username = findViewById(R.id.username);
         password = findViewById(R.id.password);
         login = findViewById(R.id.submit);
@@ -184,5 +200,15 @@ public class MenuActivity extends AppCompatActivity {
 
         requestQueue.add(objectRequest);
 
+    }
+    public static boolean hasPermissions(Context context, String... permissions){
+        if(context != null && permissions != null){
+            for(String permission : permissions){
+                if(ActivityCompat.checkSelfPermission(context,permission) != PackageManager.PERMISSION_GRANTED){
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }
