@@ -156,7 +156,6 @@ public class MapaFragment extends Fragment implements LocationListener,OnMapRead
                 .title("Mi ubicación actual")
                 .icon(BitmapDescriptorFactory
                         .defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
-        Toast.makeText(getContext(), "Actualizando ubicación "+String.valueOf(latitudeNetwork), Toast.LENGTH_SHORT).show();
 
     }
 
