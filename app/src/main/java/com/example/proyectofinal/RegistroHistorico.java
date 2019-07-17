@@ -2,14 +2,11 @@ package com.example.proyectofinal;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
+
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,6 +16,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -26,12 +33,16 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.navigation.NavigationView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 import static com.example.proyectofinal.R.id.center;
 import static com.example.proyectofinal.R.id.navigation_header_role;
@@ -44,6 +55,7 @@ public class RegistroHistorico extends AppCompatActivity {
     String role;
     LinearLayout list_alerts;
     TextView[] tv;
+    AppCompatActivity APP;
     JSONArray list_of_all_events = new JSONArray();
     private DrawerLayout dl;
     private ActionBarDrawerToggle adbt;
@@ -61,6 +73,7 @@ public class RegistroHistorico extends AppCompatActivity {
 
         final RequestQueue requestQueue = Volley.newRequestQueue(this);
 
+        APP = this;
         Intent i = getIntent();
         settings = getSharedPreferences("preferences",0);
         username = settings.getString("username", " ");
@@ -75,6 +88,9 @@ public class RegistroHistorico extends AppCompatActivity {
         header = nav_view.getHeaderView(0);
         _username = header.findViewById(navigation_header_username);
         _role = header.findViewById(navigation_header_role);
+
+
+
 
         //fetchAlerts();
 
@@ -134,12 +150,13 @@ public class RegistroHistorico extends AppCompatActivity {
         _username.setText(username);
         _role.setText(role);
         list = new ArrayList<>();
-        mAdapter = new HistoricoAdapter(list);
+        mAdapter = new HistoricoAdapter(list,this);
         mLayoutManager = new LinearLayoutManager(RegistroHistorico.this);
         mRecyclerView = findViewById(R.id.historicoRecyclerView);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
+        final RequestQueue requestQueue = Volley.newRequestQueue(this);
         final JsonArrayRequest objectRequest = new JsonArrayRequest(
                 Request.Method.GET,
                 "http://clandero.pythonanywhere.com/alert/all",
@@ -152,7 +169,21 @@ public class RegistroHistorico extends AppCompatActivity {
                             try {
                                 JSONObject x = response.getJSONObject(i);
                                 //Log.d("ITEM",x.toString());
-                                list.add(new HistoricoItem(x.getString("nombre"), x.getString("tipoalerta"), x.getDouble("coordenadaX"), x.getDouble("coordenadaY"), x.getString("detalle")));
+                                String direccion = "direccion";
+                                try {
+                                    Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
+                                    List<Address> addresses = geocoder.getFromLocation(x.getDouble("coordenadaX"), x.getDouble("coordenadaY"), 1);
+                                    if (addresses.size() > 0) {
+                                        Address address = addresses.get(0);
+                                        direccion = address.getAddressLine(0);
+                                        Log.d("DIRECCIONCOMPLETA", direccion);
+                                    }
+
+
+                                } catch (IOException ex) {
+                                    ex.printStackTrace();
+                                }
+                                list.add(new HistoricoItem(x.getString("nombre"), x.getString("tipoalerta"), x.getDouble("coordenadaX"), x.getDouble("coordenadaY"), x.getString("detalle"),direccion));
                                 //Log.d("LIST",list.get(i).getNombre());
 
                             } catch (JSONException e) {
@@ -192,60 +223,6 @@ public class RegistroHistorico extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONArray response) {
                         Log.e("Rest Response", response.toString());
-                        /*try{
-                            // Loop through the array elements
-                            tv = new TextView[response.length()];
-                            for(int i=0;i<response.length();i++){
-                                // Get current json object
-                                JSONObject x = response.getJSONObject(i);
-                                // Get the current student (json object) data
-                                //String nombre = x.getString("nombre");
-                                double coordenadaX = x.getDouble("coordenadaX");
-                                double coordenadaY = x.getDouble("coordenadaY");
-                                int asistentesActuales = x.getInt("asistentesActuales");
-                                int asistentesSolicitados = x.getInt("asistentesSolicitados");
-                                String creadorAviso = x.getString("creadorAviso");
-                                String detalle = x.getString("detalle");
-                                String tipoAlerta = x.getString("tipoalerta");
-
-                                Log.d("ALERT",nombre);
-
-                                LinearLayout newItem = new LinearLayout(RegistroHistorico.this);
-                                list_alerts.addView(newItem);
-                                newItem.setMinimumWidth(LinearLayout.LayoutParams.MATCH_PARENT);
-                                newItem.setMinimumHeight(LinearLayout.LayoutParams.MATCH_PARENT);
-                                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,100,0);
-
-                                TextView t_nombre = new TextView(RegistroHistorico.this);
-                                newItem.addView(t_nombre);
-                                t_nombre.setLayoutParams(params);
-                                t_nombre.setGravity(center);
-                                t_nombre.setText(nombre);
-
-                                TextView t_tipoAlerta = new TextView(RegistroHistorico.this);
-                                newItem.addView(t_tipoAlerta);
-                                t_tipoAlerta.setLayoutParams(params);
-                                t_tipoAlerta.setGravity(center);
-                                t_tipoAlerta.setText(tipoAlerta);
-
-
-
-
-                                // Display the formatted json data in text view
-                                //mTextView.append(firstName +" " + lastName +"\nAge : " + age);
-                                //mTextView.append("\n\n");
-                                //TextView temp;
-                                //temp = new TextView(RegistroHistorico.this);
-                                //list_alerts.addView(temp);
-                                //temp.setWidth(LinearLayout.LayoutParams.MATCH_PARENT);
-                                //temp.setGravity(center);
-                                //temp.setText(nombre);
-
-                                //tv[i] = temp;
-                            }
-                        }catch (JSONException e){
-                            e.printStackTrace();
-                        }*/
                     }
                 },
                 new Response.ErrorListener() {

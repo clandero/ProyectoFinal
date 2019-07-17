@@ -3,4 +3,11 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="colorFondoAlerta">#FFF8F7</color>
+    <color name="colorNombreAlerta">#F0553E</color>
+    <color name="colorAlertas">#673AB7</color>
+    <color name="colorNegro">#000000</color>
+    <color name="colorAsistir">#B6F861</color>
+    <color name="colorRechazar">#F37E7E</color>
+    <color name="colorBlanco">#FFFFFF</color>
 </resources>
