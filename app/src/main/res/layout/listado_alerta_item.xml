@@ -64,15 +64,25 @@
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
                 android:orientation="horizontal">
                 <Button
+                    android:id="@+id/boton_asistir"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
                     android:layout_alignParentLeft="true"
                     android:background="@color/colorAsistir"
-                    android:text="Asistir"/>
+                    android:text="Asistir" />
+                <TextView
+                    android:id="@+id/asistencia"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:textSize="16dp"
+                    android:visibility="invisible"/>
                 <Button
+                    android:id="@+id/boton_rechazar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="20dp"

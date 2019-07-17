@@ -75,7 +75,7 @@ public class MapaFragment extends Fragment implements LocationListener,OnMapRead
         locationManager.removeUpdates(this);
 
         locationManager.requestLocationUpdates(
-                LocationManager.NETWORK_PROVIDER, 10 * 1000, 3, this);
+                LocationManager.GPS_PROVIDER, 10 * 1000, 3, this);
         Toast.makeText(getContext(), "Estableciendo ubicación actual", Toast.LENGTH_LONG).show();
 
     }
