@@ -150,6 +150,8 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
         if(id == R.id.create_alert){
             Toast.makeText(MainActivity.this, "CREATE ALERT", Toast.LENGTH_SHORT).show();
+            Intent i = new Intent(MainActivity.this,AlertaActivity.class);
+            startActivity(i);
             return super.onOptionsItemSelected(item);
         }
         else{

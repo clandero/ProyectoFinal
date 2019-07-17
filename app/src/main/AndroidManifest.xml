@@ -7,6 +7,9 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.VIBRATE" />
 
+    <uses-permission android:name="android.permission.SEND_SMS"/>
+
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/logo_bomberos"
@@ -17,6 +20,7 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning"
         tools:targetApi="m">
+        <activity android:name=".AlertaActivity"></activity>
 
         <receiver
             android:name=".NetworkChangeReceiver"
@@ -87,7 +91,6 @@
                 <category android:name="${applicationId}" />
             </intent-filter>
         </receiver>
-
     </application>
 
 </manifest>

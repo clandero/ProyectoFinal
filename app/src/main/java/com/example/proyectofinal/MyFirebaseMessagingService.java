@@ -1,5 +1,6 @@
 package com.example.proyectofinal;
 
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -120,35 +121,40 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 PendingIntent.FLAG_ONE_SHOT);
 
         String channelId = getString(R.string.default_notification_channel_id);
-        Uri defaultSoundUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + this.getPackageName() + "/" + R.raw.alarm_vs_turbo);
+        Uri defaultSoundUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + this.getPackageName() + "/" + R.raw.alarm);
 
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this, channelId)
                         .setSmallIcon(R.drawable.logo_bomberos)
                         .setContentTitle(title)
                         .setContentText(messageBody)
+                        .setDefaults(Notification.FLAG_INSISTENT)
                         .setVibrate(new long[]{500,100,200,300})
                         .setColor(Color.RED)
-                        .setOngoing(true)
                         .setAutoCancel(true)
                         .setSound(defaultSoundUri)
                         .setContentIntent(pendingIntent);
+
 
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         // Since android Oreo notification channel is needed.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(channelId,
-                    "Canal Predeterminado Bomberos",
-                    NotificationManager.IMPORTANCE_HIGH);
 
-            AudioAttributes attributes = new AudioAttributes.Builder()
+            AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
                     .setUsage(AudioAttributes.USAGE_ALARM)
                     .build();
 
+            NotificationChannel channel = new NotificationChannel(channelId,
+                    "Bomberos",
+                    NotificationManager.IMPORTANCE_HIGH);
+
+
+
             channel.enableVibration(true);
-            channel.setSound(defaultSoundUri,attributes);
+            channel.setSound(defaultSoundUri,audioAttributes);
             notificationManager.createNotificationChannel(channel);
         }
 
